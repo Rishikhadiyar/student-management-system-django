@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container mt-5">
+
+<h1 class="text-3xl font-bold text-center mb-5">
+Student Management Dashboard
+</h1>
+
+<div class="row g-4">
+
+<!-- Total Students -->
+
+<div class="col-md-4">
+<div class="card text-center shadow-lg p-4 h-100">
+
+<h4>Total Students</h4>
+
+<h2 class="text-primary mt-3">{{ total_students }}</h2>
+
+</div>
+</div>
+
+<!-- Add Student -->
+
+<div class="col-md-4">
+<div class="card text-center shadow-lg p-4 h-100">
+
+<h4>Add Student</h4>
+
+<a href="/create/" class="btn btn-success mt-3">
+Add Student
+</a>
+
+</div>
+</div>
+
+<!-- View Students -->
+
+<div class="col-md-4">
+<div class="card text-center shadow-lg p-4 h-100">
+
+<h4>View Students</h4>
+
+<a href="/students/" class="btn btn-primary mt-3">
+View Students
+</a>
+
+</div>
+</div>
+
+<!-- Search Students -->
+
+<div class="col-md-4">
+<div class="card text-center shadow-lg p-4 h-100">
+
+<h4>Search Students</h4>
+
+<a href="/students/" class="btn btn-warning mt-3">
+Search Student
+</a>
+
+</div>
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
