@@ -4,6 +4,10 @@ from django.db.models import Q
 from .models import Student
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView
+from django.views.generic import DeleteView
 
 def home(request):
    total_students = Student.objects.count()
@@ -13,48 +17,12 @@ def home(request):
     })
 
 
-def create_student(request):
-    if request.method == "POST":
-        name = request.POST['name']
-        email = request.POST['email']
-        age = request.POST['age']
-        course = request.POST['course']
-
-        Student.objects.create(
-            name=name,
-            email=email,
-            age=age,
-            course=course
-        )
-        messages.success(request,"Student Added Successfully")
-
-        return redirect('student_list')
-
-    return render(request, 'create_student.html')
 
 
 
-def delete_student(request, id):
-    student = Student.objects.get(id=id)
-    student.delete()
-    messages.success(request,"Student Deleted Successfully")
-    return redirect('student_list')
+
+
 # Create your views here.
-def edit_student(request, id):
-
-    student = Student.objects.get(id=id)
-
-    if request.method == "POST":
-        student.name = request.POST['name']
-        student.email = request.POST['email']
-        student.age = request.POST['age']
-        student.course = request.POST['course']
-
-        student.save()
-        messages.success(request,"Student Updated Successfully")
-        return redirect('student_list')
-
-    return render(request, 'edit_student.html', {'student': student})
 
 class StudentListView(ListView):
     model = Student
@@ -71,3 +39,21 @@ class StudentListView(ListView):
                 Q(email__icontains=search_query)
             )
         return Student.objects.all()
+    
+class StudentCreateView(CreateView):
+    model = Student
+    fields = ['name', 'email', 'age', 'course']
+    template_name = 'create_student.html'
+    success_url = reverse_lazy('student_list')   
+    
+class StudentUpdateView(UpdateView):
+    model = Student
+    fields = ['name', 'email', 'age', 'course']
+    template_name = 'edit_student.html'
+    success_url = reverse_lazy('student_list')     
+    
+    
+class StudentDeleteView(DeleteView):
+    model = Student
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('student_list')    
