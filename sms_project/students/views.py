@@ -1,6 +1,5 @@
-from urllib import request
-
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 from .models import Student
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -37,7 +36,10 @@ def student_list(request):
     search_query = request.GET.get('search','')
 
     if search_query:
-        student_list = Student.objects.filter(name__icontains=search_query)
+      student_list = Student.objects.filter(
+    Q(name__icontains=search_query) |
+    Q(email__icontains=search_query)
+)
     else:
         student_list = Student.objects.all()
 
