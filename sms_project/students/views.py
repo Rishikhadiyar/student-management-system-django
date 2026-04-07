@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView
 from django.db.models import Q
 from .models import Student
 from django.contrib import messages
@@ -31,28 +32,6 @@ def create_student(request):
 
     return render(request, 'create_student.html')
 
-def student_list(request):
-
-    search_query = request.GET.get('search','')
-
-    if search_query:
-      student_list = Student.objects.filter(
-    Q(name__icontains=search_query) |
-    Q(email__icontains=search_query)
-)
-    else:
-        student_list = Student.objects.all()
-
-    paginator = Paginator(student_list,5)
-
-    page_number = request.GET.get('page')
-
-    students = paginator.get_page(page_number)
-
-    return render(request,'student_list.html',{
-        'students':students,
-        'search_query':search_query
-    })
 
 
 def delete_student(request, id):
@@ -76,3 +55,19 @@ def edit_student(request, id):
         return redirect('student_list')
 
     return render(request, 'edit_student.html', {'student': student})
+
+class StudentListView(ListView):
+    model = Student
+    template_name = 'student_list.html'
+    context_object_name = 'students'
+    paginate_by = 5
+
+    def get_queryset(self):
+        search_query = self.request.GET.get('search')
+
+        if search_query:
+            return Student.objects.filter(
+                Q(name__icontains=search_query) |
+                Q(email__icontains=search_query)
+            )
+        return Student.objects.all()
