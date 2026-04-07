@@ -1,33 +1,37 @@
-# Student Management System (Django)
+# 🎓 Student Directory System (Django)
 
-A simple Student Management System built using Django.  
-This project allows users to add, view, update, and delete student records.
-
-## Features
+## 🚀 Features
+- View student list with pagination
+- Search students by name and email
 - Add new students
-- View student list
-- Edit student details
-- Delete student records
-- Simple dashboard UI
+- Update student details
+- Delete students with confirmation
+- Clean UI with Bootstrap + Tailwind
 
-## Technologies Used
+## 🛠 Tech Stack
 - Python
-- Django
-- HTML
-- CSS
-- Bootstrap
-- Tailwind CSS
+- Django (CBV)
 - SQLite
+- Bootstrap & Tailwind CSS
 
-## Project Structure
-sms_project/
-students/
-templates/
-db.sqlite3
-manage.py
+## ⚙️ Functionality
+- Class-Based Views (ListView, CreateView, UpdateView, DeleteView)
+- Pagination (5 records per page)
+- Search with `icontains` and Q objects
+- Django Messages Framework
 
-## How to Run the Project
+## 📸 Screens
+- Home Dashboard
+- Student List
+- Add / Edit Form
+- Delete Confirmation
 
-1. Clone the repository
-2. Install Django
-3. Run the server
+## ▶️ Run Locally
+```bash
+git clone <your-repo-link>
+cd project-folder
+python -m venv env
+env\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
