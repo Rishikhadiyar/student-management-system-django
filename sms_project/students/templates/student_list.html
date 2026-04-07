@@ -21,7 +21,7 @@
 <input 
 type="text" 
 name="search" 
-value="{{search_query}}" 
+value="{{request.GET.search}}" 
 placeholder="Search student by name..."
 class="form-control"
 >
@@ -79,27 +79,27 @@ Delete
 </table>
 <div class="text-center mt-3">
 
-{% if students.has_previous %}
+{% if page_obj.has_previous %}
 
-<a href="?page=1&search={{search_query}}" class="btn btn-secondary">First</a>
+<a href="?page=1&search={{ request.GET.search }}" class="btn btn-secondary">First</a>
 
-<a href="?page={{students.previous_page_number}}&search={{search_query}}" class="btn btn-secondary">
+<a href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">
 Previous
 </a>
 
 {% endif %}
 
 <span class="btn btn-light">
-Page {{students.number}} of {{students.paginator.num_pages}}
+Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
 </span>
 
-{% if students.has_next %}
+{% if page_obj.has_next %}
 
-<a href="?page={{students.next_page_number}}&search={{search_query}}" class="btn btn-secondary">
+<a href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">
 Next
 </a>
 
-<a href="?page={{students.paginator.num_pages}}&search={{search_query}}" class="btn btn-secondary">
+<a href="?page={{ page_obj.paginator.num_pages }}&search={{ request.GET.search }}" class="btn btn-secondary">
 Last
 </a>
 
