@@ -9,27 +9,47 @@
             Add Student
         </h2>
 
-        <form method="POST" class="space-y-4">
+        <form method="POST" class="space-y-4" novalidate>
             {% csrf_token %}
 
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger py-2">
+                {% for error in form.non_field_errors %}
+                <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <div>
-                <label class="block text-sm font-medium text-gray-600">Name</label>
-                <input type="text" name="name" class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="id_name" class="block text-sm font-medium text-gray-600">Name</label>
+                <input id="id_name" type="text" name="name" value="{{ form.name.value|default_if_none:'' }}" required class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                {% if form.name.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ form.name.errors|striptags }}</p>
+                {% endif %}
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-600">Email</label>
-                <input type="email" name="email" class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="id_email" class="block text-sm font-medium text-gray-600">Email</label>
+                <input id="id_email" type="email" name="email" value="{{ form.email.value|default_if_none:'' }}" required class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                {% if form.email.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ form.email.errors|striptags }}</p>
+                {% endif %}
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-600">Age</label>
-                <input type="number" name="age" class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="id_age" class="block text-sm font-medium text-gray-600">Age</label>
+                <input id="id_age" type="number" name="age" value="{{ form.age.value|default_if_none:'' }}" required class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                {% if form.age.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ form.age.errors|striptags }}</p>
+                {% endif %}
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-600">Course</label>
-                <input type="text" name="course" class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="id_course" class="block text-sm font-medium text-gray-600">Course</label>
+                <input id="id_course" type="text" name="course" value="{{ form.course.value|default_if_none:'' }}" class="w-full mt-1 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400">
+                {% if form.course.errors %}
+                <p class="text-red-600 text-sm mt-1">{{ form.course.errors|striptags }}</p>
+                {% endif %}
             </div>
 
             <button type="submit" class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition">
