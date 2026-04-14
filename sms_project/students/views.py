@@ -69,3 +69,54 @@ class StudentDeleteView(DeleteView):
     def form_valid(self, form):
         messages.success(self.request, 'Student deleted successfully.')
         return super().form_valid(form)
+
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .models import Student
+from .serializers import StudentSerializer
+
+
+@api_view(['GET', 'POST'])
+def student_list(request):
+
+    if request.method == 'GET':
+        students = Student.objects.all()
+        serializer = StudentSerializer(students, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = StudentSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+
+        return Response(serializer.errors)
+    
+    
+@api_view(['GET', 'PUT', 'DELETE'])
+def student_detail(request, pk):
+
+    try:
+        student = Student.objects.get(pk=pk)
+    except Student.DoesNotExist:
+        return Response({'error': 'Student not found'})
+
+    # GET single student
+    if request.method == 'GET':
+        serializer = StudentSerializer(student)
+        return Response(serializer.data)
+
+    # UPDATE student
+    elif request.method == 'PUT':
+        serializer = StudentSerializer(student, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
+
+    # DELETE student
+    elif request.method == 'DELETE':
+        student.delete()
+        return Response({'message': 'Student deleted'})    
