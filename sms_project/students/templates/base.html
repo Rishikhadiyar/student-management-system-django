@@ -1,35 +1,68 @@
 <!DOCTYPE html>
 <html>
 <head>
+{% load static %}
 
 <title>Student Management System</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="{% static 'students/css/style.css' %}">
+<script>
+tailwind.config = {
+    theme: {
+        extend: {
+            fontFamily: {
+                display: ['Sora', 'sans-serif'],
+            },
+        }
+    }
+}
+</script>
 
 </head>
 
-<body class="bg-gray-100">
+<body class="font-display text-slate-800 bg-slate-100">
 
-<nav class="navbar navbar-dark bg-dark">
-<div class="container">
+<div class="fixed inset-0 -z-10 bg-[radial-gradient(circle_at_top_left,_#ecfeff,_#f8fafc_35%,_#f1f5f9)]"></div>
 
-<a class="navbar-brand" href="/">Student Management</a>
+<nav class="border-b border-slate-200 bg-white/80 backdrop-blur-md">
+<div class="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4">
 
-<div>
-<a href="/" class="btn btn-light btn-sm">Home</a>
-<a href="/create/" class="btn btn-success btn-sm">Add Student</a>
-<a href="/students/" class="btn btn-primary btn-sm">Student List</a>
+<a class="flex items-center gap-2 text-lg font-bold tracking-tight text-slate-900" href="/">
+<img src="{% static 'students/images/logo.svg' %}" alt="Logo" class="brand-logo">
+<span>Student Management</span>
+</a>
+
+<div class="flex items-center gap-2">
+<a data-nav="home" href="/" class="rounded-full border border-slate-300 bg-white px-4 py-1.5 text-sm font-medium text-slate-700 transition hover:border-slate-400 hover:bg-slate-50">Home</a>
+<a data-nav="create" href="/create/" class="rounded-full bg-emerald-600 px-4 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700">Add Student</a>
+<a data-nav="students" href="/students/" class="rounded-full border border-emerald-300 bg-emerald-50 px-4 py-1.5 text-sm font-medium text-emerald-700 transition hover:bg-emerald-100">Student List</a>
+{% if user.is_authenticated %}
+<a data-nav="dashboard" href="/dashboard/" class="rounded-full border border-sky-300 bg-sky-50 px-4 py-1.5 text-sm font-medium text-sky-700 transition hover:bg-sky-100">Dashboard</a>
+<a data-nav="course-add" href="/courses/add/" class="rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-medium text-amber-700 transition hover:bg-amber-100">Add Course</a>
+<a data-nav="logout" href="/logout/" class="rounded-full border border-rose-300 bg-rose-50 px-4 py-1.5 text-sm font-medium text-rose-700 transition hover:bg-rose-100">Logout</a>
+{% else %}
+<a data-nav="login" href="/login/" class="rounded-full border border-sky-300 bg-sky-50 px-4 py-1.5 text-sm font-medium text-sky-700 transition hover:bg-sky-100">Login</a>
+<a data-nav="register" href="/register/" class="rounded-full border border-purple-300 bg-purple-50 px-4 py-1.5 text-sm font-medium text-purple-700 transition hover:bg-purple-100">Register</a>
+{% endif %}
 </div>
 
 </div>
 </nav>
 
-<div class="container mt-4">
+<div class="mx-auto mt-6 w-full max-w-6xl px-4 pb-10">
 {% if messages %}
 {% for message in messages %}
-
-<div class="alert alert-success">
+<div class="mb-3 rounded-2xl border px-4 py-3 text-sm font-medium
+{% if message.tags == 'success' %}border-emerald-200 bg-emerald-50 text-emerald-700{% endif %}
+{% if message.tags == 'error' %}border-rose-200 bg-rose-50 text-rose-700{% endif %}
+{% if message.tags == 'warning' %}border-amber-200 bg-amber-50 text-amber-700{% endif %}
+{% if message.tags == 'info' %}border-sky-200 bg-sky-50 text-sky-700{% endif %}
+">
 {{message}}
 </div>
 
@@ -41,5 +74,6 @@
 
 </div>
 
+<script src="{% static 'students/js/script.js' %}"></script>
 </body>
 </html>

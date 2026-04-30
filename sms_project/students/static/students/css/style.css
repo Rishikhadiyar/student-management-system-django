@@ -1,0 +1,19 @@
+/* Local static stylesheet to demonstrate Django static files usage */
+:root {
+    --brand-ring: rgba(16, 185, 129, 0.15);
+}
+
+body {
+    letter-spacing: 0.01em;
+}
+
+.brand-logo {
+    height: 1.75rem;
+    width: 1.75rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 6px 16px var(--brand-ring);
+}
+
+.table-row-hover:hover {
+    background-color: #f8fafc;
+}

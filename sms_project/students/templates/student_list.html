@@ -1,115 +1,121 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends "base.html" %}
 
-<title>Students</title>
+{% block content %}
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<section class="space-y-6">
+    <div class="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-7 shadow-xl shadow-slate-200/70">
+        <div class="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-emerald-200/60 blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-cyan-200/50 blur-2xl"></div>
 
-<script src="https://cdn.tailwindcss.com"></script>
+        <div class="relative flex flex-wrap items-center justify-between gap-4">
+            <div>
+                <span class="inline-block rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                    Student Directory
+                </span>
+                <h1 class="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Student List</h1>
+                <p class="mt-1 text-sm text-slate-600">Search, review, and manage student records.</p>
+            </div>
+            <a href="{% url 'create_student' %}" class="inline-flex items-center justify-center rounded-2xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-emerald-200 transition hover:-translate-y-0.5 hover:bg-emerald-700">
+                Add Student
+            </a>
+        </div>
 
-</head>
+        <form method="GET" class="relative mt-6 grid grid-cols-1 gap-3 md:grid-cols-[1fr_220px_auto]">
+            <input
+                type="text"
+                name="search"
+                value="{{ request.GET.search }}"
+                placeholder="Search by name or email..."
+                class="w-full rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 text-sm font-medium text-slate-800 shadow-sm outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100"
+            >
+            <select name="sort" class="w-full rounded-2xl border border-slate-300 bg-white/90 px-4 py-3 text-sm font-medium text-slate-800 shadow-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-100">
+                <option value="id" {% if current_sort == 'id' %}selected{% endif %}>Default</option>
+                <option value="name" {% if current_sort == 'name' %}selected{% endif %}>Name (A-Z)</option>
+                <option value="-name" {% if current_sort == '-name' %}selected{% endif %}>Name (Z-A)</option>
+                <option value="age" {% if current_sort == 'age' %}selected{% endif %}>Age (Low to High)</option>
+                <option value="-age" {% if current_sort == '-age' %}selected{% endif %}>Age (High to Low)</option>
+            </select>
+            <button type="submit" class="rounded-2xl border border-emerald-300 bg-emerald-50 px-5 py-3 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100">
+                Apply
+            </button>
+        </form>
+    </div>
 
-<body class="bg-gray-100">
+    <div class="overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 shadow-xl shadow-slate-200/70">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-slate-200 text-sm">
+                <thead class="bg-slate-900 text-left text-xs uppercase tracking-wider text-slate-100">
+                    <tr>
+                        <th class="px-5 py-4">Profile</th>
+                        <th class="px-5 py-4">Name</th>
+                        <th class="px-5 py-4">Email</th>
+                        <th class="px-5 py-4">Age</th>
+                        <th class="px-5 py-4">Course</th>
+                        <th class="px-5 py-4">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                    {% for student in students %}
+                    <tr class="table-row-hover transition hover:bg-slate-50">
+                        <td class="px-5 py-4">
+                            {% if student.profile_image %}
+                            <img src="{{ student.profile_image.url }}" alt="{{ student.name }}" class="h-12 w-12 rounded-lg object-cover ring-1 ring-slate-200">
+                            {% else %}
+                            <div class="flex h-12 w-12 items-center justify-center rounded-lg bg-slate-100 text-xs font-semibold text-slate-500">
+                                N/A
+                            </div>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-4 font-semibold text-slate-900">{{ student.name }}</td>
+                        <td class="px-5 py-4">{{ student.email }}</td>
+                        <td class="px-5 py-4">{{ student.age }}</td>
+                        <td class="px-5 py-4">{% if student.course %}{{ student.course.name }}{% else %}-{% endif %}</td>
+                        <td class="px-5 py-4">
+                            <div class="flex flex-wrap gap-2">
+                                <a href="{% url 'edit_student' student.id %}" class="rounded-xl border border-amber-300 bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700 transition hover:bg-amber-100">
+                                    Edit
+                                </a>
+                                <a href="{% url 'delete_student' student.id %}" class="rounded-xl border border-rose-300 bg-rose-50 px-3 py-1.5 text-xs font-semibold text-rose-700 transition hover:bg-rose-100">
+                                    Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="6" class="px-5 py-10 text-center text-sm font-medium text-slate-500">
+                            No students found. Add a student to get started.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<div class="container mt-5">
+    <div class="flex flex-wrap items-center justify-center gap-2">
+        {% if page_obj.has_previous %}
+        <a href="?page=1&search={{ request.GET.search }}&sort={{ current_sort }}" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+            First
+        </a>
+        <a href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}&sort={{ current_sort }}" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+            Previous
+        </a>
+        {% endif %}
 
-<h1 class="text-3xl font-bold mb-4 text-center">Student List</h1>
+        <span class="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
 
-<form method="GET" class="mb-3">
-<div class="input-group">
-<input 
-type="text" 
-name="search" 
-value="{{request.GET.search}}" 
-placeholder="Search student by name..."
-class="form-control"
->
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}&sort={{ current_sort }}" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+            Next
+        </a>
+        <a href="?page={{ page_obj.paginator.num_pages }}&search={{ request.GET.search }}&sort={{ current_sort }}" class="rounded-xl border border-slate-300 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50">
+            Last
+        </a>
+        {% endif %}
+    </div>
+</section>
 
-
-
-<button type="submit" class="btn btn-primary">
-Search
-</button>
-</div>
-</form>
-<a href="/" class="btn btn-primary mb-3">Home</a>
-<a href="/create/" class="btn btn-success mb-3">Add Student</a>
-<table class="table table-bordered table-striped" id="studentTable">
-
-<thead class="table-dark">
-<tr>
-<th>Name</th>
-<th>Email</th>
-<th>Age</th>
-<th>Course</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for student in students %}
-
-<tr>
-
-<td>{{student.name}}</td>
-<td>{{student.email}}</td>
-<td>{{student.age}}</td>
-<td>{{student.course}}</td>
-
-<td>
-
-<a href="{% url 'edit_student' student.id %}" class="btn btn-warning btn-sm">Edit</a>
-
-<a href="{% url 'delete_student' student.id %}"
-class="btn btn-danger btn-sm"
-onclick="return confirm('Are you sure you want to delete this student?')">
-Delete
-</a>
-
-</td>
-
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-<div class="text-center mt-3">
-
-{% if page_obj.has_previous %}
-
-<a href="?page=1&search={{ request.GET.search }}" class="btn btn-secondary">First</a>
-
-<a href="?page={{ page_obj.previous_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">
-Previous
-</a>
-
-{% endif %}
-
-<span class="btn btn-light">
-Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-</span>
-
-{% if page_obj.has_next %}
-
-<a href="?page={{ page_obj.next_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">
-Next
-</a>
-
-<a href="?page={{ page_obj.paginator.num_pages }}&search={{ request.GET.search }}" class="btn btn-secondary">
-Last
-</a>
-
-{% endif %}
-
-</div>
-</div>
-
-
-
-
-</body>
-</html>
+{% endblock %}

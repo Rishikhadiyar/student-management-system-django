@@ -10,22 +10,43 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
+import os
 import sqlite3
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def _sqlite_readable(db_path: Path) -> bool:
-    """Return True when SQLite file can be opened and queried."""
+def _sqlite_writable(db_path: Path) -> bool:
+    """Return True when SQLite file can be opened and committed to."""
     try:
+        db_path.parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(db_path)
-        conn.execute("SELECT 1")
+        cur = conn.cursor()
+        cur.execute("CREATE TABLE IF NOT EXISTS __db_healthcheck (id INTEGER)")
+        cur.execute("INSERT INTO __db_healthcheck (id) VALUES (1)")
+        conn.commit()
+        cur.execute("DELETE FROM __db_healthcheck WHERE id = 1")
+        conn.commit()
+        cur.execute("DROP TABLE IF EXISTS __db_healthcheck")
+        conn.commit()
         conn.close()
         return True
     except Exception:
         return False
+
+
+PROJECT_DB = BASE_DIR / 'db.sqlite3'
+WORKING_DB = BASE_DIR / 'db_working.sqlite3'
+LOCAL_DB_DIR = Path(os.environ.get('LOCALAPPDATA', str(BASE_DIR))) / 'StudentManagementSystem'
+LOCAL_DB = LOCAL_DB_DIR / 'sms_project.sqlite3'
+TEMP_DB = Path(os.environ.get('TEMP', str(BASE_DIR))) / 'sms_project.sqlite3'
+
+DB_CANDIDATES = [PROJECT_DB, WORKING_DB, LOCAL_DB, TEMP_DB]
+SQLITE_DB_PATH = next((path for path in DB_CANDIDATES if _sqlite_writable(path)), None)
+if SQLITE_DB_PATH is None:
+    raise RuntimeError('No writable SQLite path found for Django database.')
 
 
 # Quick-start development settings - unsuitable for production
@@ -89,11 +110,7 @@ WSGI_APPLICATION = 'sms_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': (
-            BASE_DIR / 'db.sqlite3'
-            if _sqlite_readable(BASE_DIR / 'db.sqlite3')
-            else BASE_DIR / 'db_working.sqlite3'
-        ),
+        'NAME': SQLITE_DB_PATH,
     }
 }
 
@@ -133,3 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/dashboard/'

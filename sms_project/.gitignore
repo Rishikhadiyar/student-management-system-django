@@ -5,8 +5,11 @@ db.sqlite3
 db.sqlite3-journal
 db.sqlite3.copy
 db_working.sqlite3
+db_new_test.sqlite3
+*.sqlite3-journal
 .recovery/
 .delete_test.tmp
 .DS_Store
 *.log
 .vscode/
+media/

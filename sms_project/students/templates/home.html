@@ -2,70 +2,65 @@
 
 {% block content %}
 
-<div class="container mt-5">
+<section class="space-y-6">
+    <div class="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white/90 p-8 shadow-xl shadow-slate-200/70">
+        <div class="pointer-events-none absolute -right-16 -top-16 h-44 w-44 rounded-full bg-emerald-200/60 blur-2xl"></div>
+        <div class="pointer-events-none absolute -bottom-20 -left-20 h-44 w-44 rounded-full bg-cyan-200/50 blur-2xl"></div>
 
-<h1 class="text-3xl font-bold text-center mb-5">
-Student Management Dashboard
-</h1>
+        <div class="relative">
+            <span class="inline-block rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-emerald-700">
+                Dashboard
+            </span>
+            <h1 class="mt-3 text-4xl font-extrabold tracking-tight text-slate-900">Student Management System</h1>
+            <p class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+                Track student records, keep details updated, and quickly navigate through your directory from one place.
+            </p>
+        </div>
+    </div>
 
-<div class="row g-4">
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-slate-200/60">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Students</p>
+            <p class="mt-3 text-4xl font-extrabold text-emerald-700">{{ total_students }}</p>
+        </div>
 
-<!-- Total Students -->
+        <div class="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-slate-200/60">
+            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Courses</p>
+            <p class="mt-3 text-4xl font-extrabold text-sky-700">{{ total_courses }}</p>
+        </div>
 
-<div class="col-md-4">
-<div class="card text-center shadow-lg p-4 h-100">
+        <a href="{% url 'create_student' %}" class="group rounded-3xl border border-emerald-200 bg-emerald-50/80 p-6 shadow-lg shadow-emerald-100/80 transition hover:-translate-y-1 hover:bg-emerald-100/80">
+            <p class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Add Student</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Create New Record</p>
+            <p class="mt-1 text-sm text-slate-600">Add student details with name, email, age, and course.</p>
+        </a>
 
-<h4>Total Students</h4>
+        <a href="{% url 'student_list' %}" class="group rounded-3xl border border-sky-200 bg-sky-50/80 p-6 shadow-lg shadow-sky-100/80 transition hover:-translate-y-1 hover:bg-sky-100/80">
+            <p class="text-xs font-semibold uppercase tracking-wider text-sky-700">View Students</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Open Directory</p>
+            <p class="mt-1 text-sm text-slate-600">Browse students, edit details, and manage records.</p>
+        </a>
 
-<h2 class="text-primary mt-3">{{ total_students }}</h2>
+        <a href="{% url 'student_list' %}" class="group rounded-3xl border border-amber-200 bg-amber-50/80 p-6 shadow-lg shadow-amber-100/80 transition hover:-translate-y-1 hover:bg-amber-100/80">
+            <p class="text-xs font-semibold uppercase tracking-wider text-amber-700">Search Students</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Find Instantly</p>
+            <p class="mt-1 text-sm text-slate-600">Use search on list page to filter by name or email.</p>
+        </a>
 
-</div>
-</div>
-
-<!-- Add Student -->
-
-<div class="col-md-4">
-<div class="card text-center shadow-lg p-4 h-100">
-
-<h4>Add Student</h4>
-
-<a href="/create/" class="btn btn-success mt-3">
-Add Student
-</a>
-
-</div>
-</div>
-
-<!-- View Students -->
-
-<div class="col-md-4">
-<div class="card text-center shadow-lg p-4 h-100">
-
-<h4>View Students</h4>
-
-<a href="/students/" class="btn btn-primary mt-3">
-View Students
-</a>
-
-</div>
-</div>
-
-<!-- Search Students -->
-
-<div class="col-md-4">
-<div class="card text-center shadow-lg p-4 h-100">
-
-<h4>Search Students</h4>
-
-<a href="/students/" class="btn btn-warning mt-3">
-Search Student
-</a>
-
-</div>
-</div>
-
-</div>
-
-</div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="group rounded-3xl border border-purple-200 bg-purple-50/80 p-6 shadow-lg shadow-purple-100/80 transition hover:-translate-y-1 hover:bg-purple-100/80">
+            <p class="text-xs font-semibold uppercase tracking-wider text-purple-700">Authenticated</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Open Dashboard</p>
+            <p class="mt-1 text-sm text-slate-600">Access protected pages and session-based features.</p>
+        </a>
+        {% else %}
+        <a href="{% url 'login' %}" class="group rounded-3xl border border-purple-200 bg-purple-50/80 p-6 shadow-lg shadow-purple-100/80 transition hover:-translate-y-1 hover:bg-purple-100/80">
+            <p class="text-xs font-semibold uppercase tracking-wider text-purple-700">Authentication</p>
+            <p class="mt-3 text-lg font-bold text-slate-900">Login / Register</p>
+            <p class="mt-1 text-sm text-slate-600">Create account and login to test authentication flow.</p>
+        </a>
+        {% endif %}
+    </div>
+</section>
 
 {% endblock %}
