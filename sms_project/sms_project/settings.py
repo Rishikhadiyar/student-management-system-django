@@ -11,9 +11,21 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import sqlite3
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+def _sqlite_readable(db_path: Path) -> bool:
+    """Return True when SQLite file can be opened and queried."""
+    try:
+        conn = sqlite3.connect(db_path)
+        conn.execute("SELECT 1")
+        conn.close()
+        return True
+    except Exception:
+        return False
 
 
 # Quick-start development settings - unsuitable for production
@@ -77,7 +89,11 @@ WSGI_APPLICATION = 'sms_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': (
+            BASE_DIR / 'db.sqlite3'
+            if _sqlite_readable(BASE_DIR / 'db.sqlite3')
+            else BASE_DIR / 'db_working.sqlite3'
+        ),
     }
 }
 
