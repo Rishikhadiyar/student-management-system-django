@@ -9,6 +9,7 @@ from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from .forms import StudentForm
 from .models import Course, Profile, Student
@@ -233,6 +234,7 @@ class StudentViewSet(ModelViewSet):
     """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
     
     def get_queryset(self):
         """

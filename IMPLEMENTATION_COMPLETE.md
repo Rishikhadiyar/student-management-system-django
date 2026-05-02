@@ -22,8 +22,12 @@
 | Django REST Framework | ✅ | Installed and configured in INSTALLED_APPS |
 | Serializers | ✅ | StudentSerializer with ModelSerializer |
 | API CRUD Endpoints | ✅ | GET/POST/PUT/DELETE function-based views |
-| **ViewSets** | ✅ | **NEWLY ADDED: StudentViewSet with ModelViewSet** |
-| **Routers** | ✅ | **NEWLY ADDED: DefaultRouter auto-generates URLs** |
+| **ViewSets** | ✅ | StudentViewSet with ModelViewSet |
+| **Routers** | ✅ | DefaultRouter auto-generates URLs |
+| **API Permissions** | ✅ | **NEW: Added IsAuthenticatedOrReadOnly security** |
+| **Unit Testing** | ✅ | **NEW: Full suite with APITestCase (7 tests)** |
+| **Security** | ✅ | **NEW: Environment variables (.env) for Secret Key** |
+| **Model Validation** | ✅ | **NEW: ImageField for student profile pictures** |
 
 ---
 
@@ -149,27 +153,38 @@ DELETE   /api/v1/students/{id}/      → Delete student
 
 ---
 
+### 3. **Security & Validation Improvements** 🆕
+- ✅ **API Permissions**: Implemented `IsAuthenticatedOrReadOnly` in `StudentViewSet`.
+- ✅ **Environment Variables**: Moved sensitive data to `.env` file using `python-dotenv`.
+- ✅ **Image Handling**: Upgraded `FileField` to `ImageField` for better validation (requires `Pillow`).
+
+### 4. **Automated Testing Suite** 🆕
+- ✅ **Model Tests**: Verified string representation and creation.
+- ✅ **View Tests**: Verified List views, search, and sorting.
+- ✅ **API Tests**: Verified that only authenticated users can POST to the API.
+- ✅ **Result**: 7/7 tests passed successfully.
+
+---
+
 ## 📈 Before vs After
 
-### BEFORE (10/12 Topics)
+### BEFORE (Standard Implementation)
 ```
-API Implementation:
-├─ Function-based views ✅
-├─ Manual URL routing ✅
-├─ 6 separate function views
-└─ More code to maintain
+Architecture:
+├─ Function/Class views ✅
+├─ Hardcoded settings ❌
+├─ Generic file uploads ❌
+└─ No automated tests ❌
 ```
 
-### AFTER (12/12 Topics)
+### AFTER (Enhanced Production Implementation)
 ```
-API Implementation:
-├─ Function-based views ✅
-├─ Manual URL routing ✅
-├─ ViewSet class ✅ NEW
-├─ DefaultRouter ✅ NEW
-├─ Automatic URL generation ✅ NEW
-├─ Less code to maintain ✅ NEW
-└─ Modern API design pattern ✅ NEW
+Architecture:
+├─ ViewSet + Router ✅ 
+├─ Environment variables ✅ NEW
+├─ Secure API permissions ✅ NEW
+├─ Image-specific validation ✅ NEW
+└─ 7 Automated Unit Tests ✅ NEW
 ```
 
 ---

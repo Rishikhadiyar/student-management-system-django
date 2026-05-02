@@ -13,3 +13,4 @@ db_new_test.sqlite3
 *.log
 .vscode/
 media/
+.env
