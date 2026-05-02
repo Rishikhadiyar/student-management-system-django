@@ -17,12 +17,11 @@ from students.serializers import StudentSerializer
 
 
 def home(request):
+    total_courses = Course.objects.count()
     if request.user.is_authenticated:
         total_students = Student.objects.filter(created_by=request.user).count()
-        total_courses = Course.objects.count()
     else:
         total_students = 0
-        total_courses = 0
         
     return render(
         request,

@@ -18,46 +18,117 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-5">
-        <div class="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-slate-200/60">
-            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Students</p>
-            <p class="mt-3 text-4xl font-extrabold text-emerald-700">{{ total_students }}</p>
-        </div>
-
-        <div class="rounded-3xl border border-slate-200 bg-white/90 p-6 shadow-lg shadow-slate-200/60">
-            <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Total Courses</p>
-            <p class="mt-3 text-4xl font-extrabold text-sky-700">{{ total_courses }}</p>
-        </div>
-
-        <a href="{% url 'create_student' %}" class="group rounded-3xl border border-emerald-200 bg-emerald-50/80 p-6 shadow-lg shadow-emerald-100/80 transition hover:-translate-y-1 hover:bg-emerald-100/80">
-            <p class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Add Student</p>
-            <p class="mt-3 text-lg font-bold text-slate-900">Create New Record</p>
-            <p class="mt-1 text-sm text-slate-600">Add student details with name, email, age, and course.</p>
+    <!-- Stats Section -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <a href="{% url 'student_list' %}" class="group relative overflow-hidden rounded-[2rem] border border-emerald-200 bg-white p-8 shadow-xl shadow-emerald-100/50 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-emerald-200/60">
+            <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-emerald-50 transition-transform group-hover:scale-150"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-bold uppercase tracking-widest text-emerald-600/80">Total Students</p>
+                    <p class="mt-2 text-6xl font-black text-slate-900">{{ total_students }}</p>
+                </div>
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                </div>
+            </div>
+            <p class="relative mt-4 text-sm font-medium text-slate-500">Manage your enrolled student directory</p>
         </a>
 
-        <a href="{% url 'student_list' %}" class="group rounded-3xl border border-sky-200 bg-sky-50/80 p-6 shadow-lg shadow-sky-100/80 transition hover:-translate-y-1 hover:bg-sky-100/80">
-            <p class="text-xs font-semibold uppercase tracking-wider text-sky-700">View Students</p>
-            <p class="mt-3 text-lg font-bold text-slate-900">Open Directory</p>
-            <p class="mt-1 text-sm text-slate-600">Browse students, edit details, and manage records.</p>
+        <a href="{% url 'add_course' %}" class="group relative overflow-hidden rounded-[2rem] border border-sky-200 bg-white p-8 shadow-xl shadow-sky-100/50 transition-all hover:-translate-y-1 hover:shadow-2xl hover:shadow-sky-200/60">
+            <div class="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-sky-50 transition-transform group-hover:scale-150"></div>
+            <div class="relative flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-bold uppercase tracking-widest text-sky-600/80">Total Courses</p>
+                    <p class="mt-2 text-6xl font-black text-slate-900">{{ total_courses }}</p>
+                </div>
+                <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-sky-600 text-white shadow-lg shadow-sky-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.168.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+            </div>
+            <p class="relative mt-4 text-sm font-medium text-slate-500">Explore available curriculum modules</p>
+        </a>
+    </div>
+
+    <!-- Actions Section -->
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <a href="{% url 'create_student' %}" class="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:-translate-y-1 hover:border-emerald-500 hover:shadow-xl">
+            <div>
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Add Student</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600">Register new students into the system with full profiles.</p>
+            </div>
+            <div class="mt-4 flex items-center text-sm font-bold text-emerald-600">
+                Get Started <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
         </a>
 
-        <a href="{% url 'student_list' %}" class="group rounded-3xl border border-amber-200 bg-amber-50/80 p-6 shadow-lg shadow-amber-100/80 transition hover:-translate-y-1 hover:bg-amber-100/80">
-            <p class="text-xs font-semibold uppercase tracking-wider text-amber-700">Search Students</p>
-            <p class="mt-3 text-lg font-bold text-slate-900">Find Instantly</p>
-            <p class="mt-1 text-sm text-slate-600">Use search on list page to filter by name or email.</p>
+        <a href="{% url 'student_list' %}" class="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:-translate-y-1 hover:border-sky-500 hover:shadow-xl">
+            <div>
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600 transition-colors group-hover:bg-sky-600 group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">View Directory</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600">Browse through the list of students and edit their details.</p>
+            </div>
+            <div class="mt-4 flex items-center text-sm font-bold text-sky-600">
+                Browse Now <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
+        </a>
+
+        <a href="{% url 'student_list' %}" class="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:-translate-y-1 hover:border-amber-500 hover:shadow-xl">
+            <div>
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-amber-50 text-amber-600 transition-colors group-hover:bg-amber-600 group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Quick Search</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600">Instantly find students by their name or email address.</p>
+            </div>
+            <div class="mt-4 flex items-center text-sm font-bold text-amber-600">
+                Search <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
         </a>
 
         {% if user.is_authenticated %}
-        <a href="{% url 'dashboard' %}" class="group rounded-3xl border border-purple-200 bg-purple-50/80 p-6 shadow-lg shadow-purple-100/80 transition hover:-translate-y-1 hover:bg-purple-100/80">
-            <p class="text-xs font-semibold uppercase tracking-wider text-purple-700">Authenticated</p>
-            <p class="mt-3 text-lg font-bold text-slate-900">Open Dashboard</p>
-            <p class="mt-1 text-sm text-slate-600">Access protected pages and session-based features.</p>
+        <a href="{% url 'dashboard' %}" class="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:-translate-y-1 hover:border-purple-500 hover:shadow-xl">
+            <div>
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-purple-50 text-purple-600 transition-colors group-hover:bg-purple-600 group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">User Dashboard</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600">Access your private metrics and session management.</p>
+            </div>
+            <div class="mt-4 flex items-center text-sm font-bold text-purple-600">
+                Enter <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
         </a>
         {% else %}
-        <a href="{% url 'login' %}" class="group rounded-3xl border border-purple-200 bg-purple-50/80 p-6 shadow-lg shadow-purple-100/80 transition hover:-translate-y-1 hover:bg-purple-100/80">
-            <p class="text-xs font-semibold uppercase tracking-wider text-purple-700">Authentication</p>
-            <p class="mt-3 text-lg font-bold text-slate-900">Login / Register</p>
-            <p class="mt-1 text-sm text-slate-600">Create account and login to test authentication flow.</p>
+        <a href="{% url 'login' %}" class="group flex flex-col justify-between rounded-3xl border border-slate-200 bg-white p-6 shadow-md transition-all hover:-translate-y-1 hover:border-indigo-500 hover:shadow-xl">
+            <div>
+                <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 transition-colors group-hover:bg-indigo-600 group-hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900">Account Access</h3>
+                <p class="mt-2 text-sm leading-relaxed text-slate-600">Securely sign in to manage your records and settings.</p>
+            </div>
+            <div class="mt-4 flex items-center text-sm font-bold text-indigo-600">
+                Sign In <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </div>
         </a>
         {% endif %}
     </div>
