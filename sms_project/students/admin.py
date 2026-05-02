@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Course, Post, Profile, Student, Tag
+from students.models import Course, Post, Profile, Student, Tag
 
 
 admin.site.register(Student)

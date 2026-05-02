@@ -13,7 +13,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
 from students.forms import StudentForm
 from students.models import Course, Profile, Student
-from .serializers import StudentSerializer
+from students.serializers import StudentSerializer
 
 
 def home(request):
