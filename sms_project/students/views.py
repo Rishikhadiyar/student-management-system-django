@@ -11,8 +11,8 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 
-from .forms import StudentForm
-from .models import Course, Profile, Student
+from students.forms import StudentForm
+from students.models import Course, Profile, Student
 from .serializers import StudentSerializer
 
 

@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import student_list, student_detail, StudentViewSet
+from students.views import student_list, student_detail, StudentViewSet
 
 # ============================================================================
 # ROUTER SETUP - Automatic URL Generation (Day 20)
