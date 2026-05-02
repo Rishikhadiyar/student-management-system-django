@@ -17,8 +17,13 @@ from students.serializers import StudentSerializer
 
 
 def home(request):
-    total_students = Student.objects.count()
-    total_courses = Course.objects.count()
+    if request.user.is_authenticated:
+        total_students = Student.objects.filter(created_by=request.user).count()
+        total_courses = Course.objects.count()
+    else:
+        total_students = 0
+        total_courses = 0
+        
     return render(
         request,
         "home.html",
@@ -35,7 +40,7 @@ def dashboard(request):
         request,
         "dashboard.html",
         {
-            "total_students": Student.objects.count(),
+            "total_students": Student.objects.filter(created_by=request.user).count(),
             "total_courses": Course.objects.count(),
             "user": request.user,
         },
@@ -118,7 +123,14 @@ class StudentListView(ListView):
             "-age": "-age",
         }
         sort_by = allowed_sort.get(sort_query, "id")
-        queryset = Student.objects.select_related("course").all().order_by(sort_by)
+        queryset = Student.objects.select_related("course").all()
+        
+        if self.request.user.is_authenticated:
+            queryset = queryset.filter(created_by=self.request.user)
+        else:
+            queryset = queryset.none()
+            
+        queryset = queryset.order_by(sort_by)
 
         if search_query:
             queryset = queryset.filter(
@@ -146,6 +158,7 @@ class StudentCreateView(CreateView):
         return context
 
     def form_valid(self, form):
+        form.instance.created_by = self.request.user
         messages.success(self.request, "Student added successfully.")
         return super().form_valid(form)
 
@@ -236,12 +249,21 @@ class StudentViewSet(ModelViewSet):
     serializer_class = StudentSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     
+    def perform_create(self, serializer):
+        """Automatically set created_by to the current user"""
+        serializer.save(created_by=self.request.user)
+    
     def get_queryset(self):
         """
         Optional: Override to add custom filtering/searching
         Example: Filter by age, name search, etc.
         """
         queryset = Student.objects.select_related('course')
+        
+        if self.request.user.is_authenticated:
+            queryset = queryset.filter(created_by=self.request.user)
+        else:
+            queryset = queryset.none()
         
         # Search by name or email (optional)
         search_query = self.request.query_params.get('search', None)

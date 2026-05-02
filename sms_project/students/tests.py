@@ -7,12 +7,14 @@ from students.models import Student, Course
 
 class StudentModelTest(TestCase):
     def setUp(self):
+        self.user = User.objects.create_user(username='modeluser', password='password123')
         self.course = Course.objects.create(name="Computer Science")
         self.student = Student.objects.create(
             name="Test Student",
             email="test@example.com",
             age=20,
-            course=self.course
+            course=self.course,
+            created_by=self.user
         )
 
     def test_student_creation(self):
@@ -25,9 +27,11 @@ class StudentModelTest(TestCase):
 class StudentViewTest(TestCase):
     def setUp(self):
         self.client = Client()
+        self.user = User.objects.create_user(username='viewuser', password='password123')
+        self.client.login(username='viewuser', password='password123')
         self.course = Course.objects.create(name="Engineering")
-        Student.objects.create(name="Alice", email="alice@example.com", age=22, course=self.course)
-        Student.objects.create(name="Bob", email="bob@example.com", age=21, course=self.course)
+        Student.objects.create(name="Alice", email="alice@example.com", age=22, course=self.course, created_by=self.user)
+        Student.objects.create(name="Bob", email="bob@example.com", age=21, course=self.course, created_by=self.user)
 
     def test_student_list_view(self):
         response = self.client.get(reverse('student_list'))

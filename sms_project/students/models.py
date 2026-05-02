@@ -14,6 +14,7 @@ class Student(models.Model):
     email = models.EmailField()
     age = models.IntegerField()
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True)
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     profile_image = models.ImageField(upload_to='students/profile_images/', blank=True, null=True)
 
     def __str__(self):
